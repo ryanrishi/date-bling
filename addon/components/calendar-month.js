@@ -33,12 +33,10 @@ export default Ember.Component.extend({
   selectedClass: SELECTED_CLASS,
 
   /**
-   * @todo use `moment.startOf('month')`
    * @type {[type]}
    */
   canonicalFirstDayOfMonth: computed('month', 'year', function() {
-    return moment().year(this.get('year')).month(this.get('month')).date(1);
-    // return moment(`${this.get('year')}-${this.get('month')}-01`).format('YYYY-MM-DD');
+    return moment().year(this.get('year')).month(this.get('month')).startOf('month');
   }),
 
 
