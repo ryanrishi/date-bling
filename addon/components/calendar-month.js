@@ -10,9 +10,9 @@ const WEEKDAY_NAMES = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 const SELECTED_CLASS = 'selected';
 
 var DisplayDate = Ember.Object.extend({
-  day: 0,
+  date: -1,
   isSelected: false,
-  isFirstDayOfWeek: false,
+  isThisMonth: false,
 });
 
 export default Ember.Component.extend({
@@ -22,7 +22,6 @@ export default Ember.Component.extend({
   month: 2,
   monthNames: MONTH_NAMES,
   monthName: computed('month', function() {
-    // todo return value from const array
     return this.get('monthNames')[this.get('month')];
   }),
   weekdayNames: WEEKDAY_NAMES,
@@ -33,20 +32,6 @@ export default Ember.Component.extend({
   selectedDays: [14],
   selectedClass: SELECTED_CLASS,
 
-  // displayDays: computed('selectedDays', function() {
-  //   var days = [];
-  //   for (let i = 0; i < this.get('numberOfDaysInMonth'); i++) {
-  //     var day = DisplayDate.create({
-  //       day: i,
-  //       isSelected: this.get('selectedDays').contains(i),
-  //       isFirstDayOfWeek: (moment(`${this.get('year')}-${this.get('month')}-${i}`).day() === 0)
-  //     });
-  //     days.push(day);
-  //   }
-  //
-  //   return days;
-  // }),
-
   /**
    * @todo use `moment.startOf('month')`
    * @type {[type]}
@@ -56,11 +41,6 @@ export default Ember.Component.extend({
     // return moment(`${this.get('year')}-${this.get('month')}-01`).format('YYYY-MM-DD');
   }),
 
-  // firstOfMonthWeekday: computed('canonicalFirstDayOfMonth', function() {
-  //   var canonicalFirstDayOfMonth = this.get('canonicalFirstDayOfMonth');
-  //
-  //   return moment(canonicalFirstDayOfMonth).day();
-  // }),
 
   /**
    * @todo use `moment.startOf('month').startOf('week')`
@@ -78,17 +58,6 @@ export default Ember.Component.extend({
 
   numberOfDaysInMonth: computed('canonicalFirstDayOfMonth', function() {
     return moment(this.get('canonicalFirstDayOfMonth')).daysInMonth();
-    // var first = moment(this.get('canonicalFirstDayOfMonth'));
-    // var numDays = 0;
-    //
-    // // months are 1-indexed
-    // while ((first.month() + 1) % 12 === this.get('month')) {
-    //   numDays++;
-    //   first = first.add(1, 'days');
-    // }
-    //
-    // // first is now into next month
-    // return numDays;
   }),
 
   numberOfWeeksInMonth: computed('canonicalFirstDayOfMonth', function() {
@@ -114,7 +83,7 @@ export default Ember.Component.extend({
     for (let i = 0; i < this.get('numberOfWeeksInMonth'); i++) {
       let days = [];
       for (let i = 0; i < 7; i++) {
-        days.push(Ember.Object.create({
+        days.push(DisplayDate.create({
           date: current.date(),
           isSelected: this.get('selectedDays').contains(current.date()),
           isThisMonth: this.get('month') === current.month()

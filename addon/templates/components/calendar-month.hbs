@@ -26,35 +26,3 @@
   </tbody>
 
 </table>
-
-
-{{!-- {{#if showMonthName}}
-  <div class="month-name"> {{monthName}} </div>
-{{/if}}
-{{#if showWeekdayNames}}
-  <div class="weekday-names">
-    {{#each weekdayNames as |name|}}
-      {{name}}
-    {{/each}}
-  </div>
-{{/if}} --}}
-
-{{!-- {{#each (range 0 firstOfMonthWeekday)}}
-  <div class="day dummy-date-holder"></div>
-{{/each}}
-
-{{#each weeks as |week|}}
-  <div class="week">
-  </div>
-{{/each}}
-
-{{#each displayDays as |day|}}
-  {{#if day.isFirstDayOfWeek}}
-      <div class="day {{if day.isSelected 'selected'}}"> {{day.day}} </div>
-  {{else}}
-    <div class="day {{if day.isSelected 'selected'}}"> {{day.day}} </div>
-  {{/if}}
-{{/each}}
-
-firstMondayOfMonth: {{firstMondayOfMonth}}
-numberOfDaysInMonth: {{numberOfDaysInMonth}} --}}
