@@ -1,3 +1,8 @@
+/**
+ * @todo custom classes (and custom logic to get those classes)
+ * @todo optional week number at start of week
+ */
+
 import Ember from 'ember';
 import layout from '../templates/components/calendar-month';
 
@@ -8,6 +13,7 @@ const {
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const WEEKDAY_NAMES = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 const SELECTED_CLASS = 'selected';
+const NOT_THIS_MONTH_CLASS = 'not-this-month';
 
 var DisplayDate = Ember.Object.extend({
   date: -1,
@@ -19,18 +25,20 @@ export default Ember.Component.extend({
   layout,
   classNames: ['calendar-month'],
 
-  month: 2,
+  month: 0,
   monthNames: MONTH_NAMES,
   monthName: computed('month', function() {
     return this.get('monthNames')[this.get('month')];
   }),
   weekdayNames: WEEKDAY_NAMES,
-  year: 2017,
 
   showMonthName: true,
   showWeekdayNames: true,
+  showYear: true,
+  year: 1970,
   selectedDays: [14],
   selectedClass: SELECTED_CLASS,
+  notThisMonthClass: NOT_THIS_MONTH_CLASS,
 
   /**
    * @type {[type]}

@@ -2,7 +2,7 @@
   <thead>
     {{#if showMonthName}}
       <tr class="month-name">
-        <th colspan="7"> {{monthName}} </th>
+        <th colspan="7"> {{monthName}} {{#if showYear}} {{year}} {{/if}} </th>
       </tr>
     {{/if}}
 
@@ -19,7 +19,7 @@
     {{#each displayWeeks as |week|}}
       <tr>
         {{#each week as |day|}}
-          <td class="day {{if day.isSelected 'selected'}} {{unless day.isThisMonth 'foo'}}"> {{day.date}} </td>
+          <td class="day {{if day.isSelected selectedClass}} {{unless day.isThisMonth notThisMonthClass}}"> {{day.date}} </td>
         {{/each}}
       </tr>
     {{/each}}
