@@ -58,18 +58,16 @@ export default Ember.Component.extend({
     return moment(this.get('canonicalFirstDayOfMonth')).daysInMonth();
   }),
 
-  numberOfWeeksInMonth: computed('canonicalFirstDayOfMonth', function() {
+  numberOfWeeksInMonth: computed('canonicalFirstDayOfMonth', 'month', function() {
     var first = moment(this.get('canonicalFirstDayOfMonth'));
     var numWeeks = 0;
 
-    // while (first.week() !== 0) {
-    //   debugger
-    //   numWeeks++;
-    //   first = first.add(1, 'week');
-    // }
+    while (first.month() === this.get('month')) {
+      numWeeks++;
+      first.add(1, 'week');
+    }
 
-    // return numWeeks;
-    return 5;
+    return numWeeks;
   }),
 
   displayWeeks: computed('numberOfWeeksInMonth', 'canonicalFirstDayOfMonth', 'selectedDays', 'month', function() {
