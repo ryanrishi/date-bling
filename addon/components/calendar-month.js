@@ -1,5 +1,4 @@
 /**
- * @todo custom classes (and custom logic to get those classes)
  * @todo optional week number at start of week
  */
 
@@ -36,7 +35,7 @@ export default Ember.Component.extend({
   showWeekdayNames: true,
   showYear: true,
   year: 1970,
-  selectedDays: [14],
+  selectedDays: [],
   selectedClass: SELECTED_CLASS,
   notThisMonthClass: NOT_THIS_MONTH_CLASS,
 
@@ -47,6 +46,15 @@ export default Ember.Component.extend({
     return moment().year(this.get('year')).month(this.get('month')).startOf('month');
   }),
 
+  /**
+   * Override this method in your controller
+   * @example start date and end date over multiple months - this component doesn't know anything about start/end dates (and shouldn't)
+   * @param {object} date - moment date
+   * @return {string} class name to be applied to this date
+   */
+  customClassFunction(date) {
+    return false;
+  },
 
   /**
    * @todo use `moment.startOf('month').startOf('week')`
@@ -90,7 +98,8 @@ export default Ember.Component.extend({
         days.push(DisplayDate.create({
           date: current.date(),
           isSelected: this.get('selectedDays').contains(current.date()),
-          isThisMonth: this.get('month') === current.month()
+          isThisMonth: this.get('month') === current.month(),
+          customClass: this.get('customClassFunction')(current)
         }));
         current = current.add(1, 'days');
       }
