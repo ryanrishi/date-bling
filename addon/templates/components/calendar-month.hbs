@@ -1,15 +1,15 @@
 <table>
   <thead>
     {{#if showMonthName}}
-      <tr class="month-name">
-        <th colspan="7"> {{monthName}} {{#if showYear}} {{year}} {{/if}} </th>
+      <tr>
+        <th class="month-name" colspan="7"> {{monthName}} {{#if showYear}} {{year}} {{/if}} </th>
       </tr>
     {{/if}}
 
     {{#if showWeekdayNames}}
-      <tr class="weekday-names">
+      <tr>
         {{#each weekdayNames as |name|}}
-          <th colspan="1"> {{name}} </th>
+          <th class="weekday-name"> {{name}} </th>
         {{/each}}
       </tr>
     {{/if}}
@@ -19,7 +19,7 @@
     {{#each displayWeeks as |week|}}
       <tr>
         {{#each week as |day|}}
-          <td class="day {{if day.isSelected selectedClass}} {{unless day.isThisMonth notThisMonthClass}}"> {{day.date}} </td>
+          <td class="day {{if day.isSelected selectedClass}} {{unless day.isThisMonth notThisMonthClass}} {{if day.customClass day.customClass}}"> {{day.date}} </td>
         {{/each}}
       </tr>
     {{/each}}

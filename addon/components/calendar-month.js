@@ -1,5 +1,6 @@
 /**
  * @todo optional week number at start of week
+ * @todo get rid of selectedDays, because this can be handled by customClassFunction
  */
 
 import Ember from 'ember';
@@ -24,7 +25,7 @@ export default Ember.Component.extend({
   layout,
   classNames: ['calendar-month'],
 
-  month: 0,
+  month: new Date().getMonth(),
   monthNames: MONTH_NAMES,
   monthName: computed('month', function() {
     return this.get('monthNames')[this.get('month')];
@@ -34,7 +35,7 @@ export default Ember.Component.extend({
   showMonthName: true,
   showWeekdayNames: true,
   showYear: true,
-  year: 1970,
+  year: new Date().getFullYear(),
   selectedDays: [],
   selectedClass: SELECTED_CLASS,
   notThisMonthClass: NOT_THIS_MONTH_CLASS,
@@ -97,9 +98,9 @@ export default Ember.Component.extend({
       for (let i = 0; i < 7; i++) {
         days.push(DisplayDate.create({
           date: current.date(),
-          isSelected: this.get('selectedDays').contains(current.date()),
+          isSelected: this.get('selectedDays').includes(current.date()),
           isThisMonth: this.get('month') === current.month(),
-          customClass: this.get('customClassFunction')(current)
+          customClass: this.get('customClassFunction').call(this, current)
         }));
         current = current.add(1, 'days');
       }
