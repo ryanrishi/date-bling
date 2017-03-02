@@ -1,0 +1,9 @@
+{{#each months as |month|}}
+  {{calendar-month
+    year=month.year
+    month=month.month
+    selectedDays=month.selectedDays
+    startDate=startDate
+    endDate=endDate
+    customClassFunction=customClassFunction}}
+{{/each}}
