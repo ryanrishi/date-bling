@@ -1,29 +1,45 @@
 .calendar-month {
-  border: 1px solid gray;
-
-  .day {
-    &.selected {
-      background: #ccc;
+  thead {
+    .month-name {
+      text-align: center;
     }
-    &.not-this-month {
+    .weekday-names {
       color: gray;
     }
   }
 
-  .weekday-names {
-    color: gray;
-  }
+  .day {
+    padding: 5px;
+    text-align: center;
+    &.selected {
+      background: @jelli-green-light;
+    }
+    &.not-this-month {
+      color: gray;
+    }
+    &.start-date,
+    &.end-date {
+      background-color: @jelli-green;
+    }
+    &.start-date {
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
 
-  .start-date,
-  .end-date {
-    color: green;
+    &.end-date {
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
   }
+}
 
-  .start-date {
-    // border radius left
-  }
 
-  .end-date {
-    // border radiud right
+// todo move this to its own stylesheet
+.calendar-month-multi {
+  display: inline-flex;
+  .calendar-month {
+      &:not(:last-child) {
+      margin-right: 15px;
+    }
   }
 }
