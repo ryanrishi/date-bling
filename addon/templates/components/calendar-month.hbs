@@ -19,7 +19,7 @@
     {{#each displayWeeks as |week|}}
       <tr>
         {{#each week as |day|}}
-          <td class="day {{if day.isSelected selectedClass}} {{unless day.isThisMonth notThisMonthClass}} {{if day.customClass day.customClass}}"> {{day.date}} </td>
+          <td class="day {{unless day.isThisMonth notThisMonthClass}} {{if day.customClass day.customClass}}"> {{day.date}} </td>
         {{/each}}
       </tr>
     {{/each}}

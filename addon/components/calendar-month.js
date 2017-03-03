@@ -1,6 +1,6 @@
 /**
  * @todo optional week number at start of week
- * @todo get rid of selectedDays, because this can be handled by customClassFunction
+ * @todo get rid of label constants and use moment
  */
 
 import Ember from 'ember';
@@ -12,14 +12,27 @@ const {
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const WEEKDAY_NAMES = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
-const SELECTED_CLASS = 'selected';
 const NOT_THIS_MONTH_CLASS = 'not-this-month';
 
 var DisplayDate = Ember.Object.extend({
   date: -1,
-  isSelected: false,
   isThisMonth: false,
 });
+
+function isPartialWeek(date) {
+  console.debug('date', date, 'startOfweek', date.startOf('week'));
+  let startOfWeek = date.startOf('week');
+  const month = date.month();
+
+  for (let i = 0; i < 7; i++) {
+      if (startOfWeek.month() !== month) {
+        return true;
+      }
+      startOfWeek = startOfWeek.add(1, 'day');
+  }
+
+  return false;
+}
 
 export default Ember.Component.extend({
   layout,
@@ -36,8 +49,6 @@ export default Ember.Component.extend({
   showWeekdayNames: true,
   showYear: true,
   year: new Date().getFullYear(),
-  selectedDays: [],
-  selectedClass: SELECTED_CLASS,
   notThisMonthClass: NOT_THIS_MONTH_CLASS,
   context: null,
 
@@ -87,14 +98,15 @@ export default Ember.Component.extend({
       first.add(1, 'week');
     }
 
-    if (this.get('showLastPartialWeek') === false) {
+    // console.debug('month', this.get('month'), 'isLastWeekPartialWeek', isPartialWeek(this.get('canonicalFirstDayOfMonth').endOf('month')));
+    if (isPartialWeek(this.get('canonicalFirstDayOfMonth').endOf('month')) && this.get('showLastPartialWeek') === false) {
       numWeeks--;
     }
 
     return numWeeks;
   }),
 
-  displayWeeks: computed('numberOfWeeksInMonth', 'canonicalFirstDayOfMonth', 'selectedDays', 'month', function() {
+  displayWeeks: computed('numberOfWeeksInMonth', 'canonicalFirstDayOfMonth', 'month', function() {
     var weeks = [];
 
     var first = moment(this.get('canonicalFirstDayOfMonth'));
@@ -105,7 +117,6 @@ export default Ember.Component.extend({
       for (let i = 0; i < 7; i++) {
         days.push(DisplayDate.create({
           date: current.date(),
-          isSelected: this.get('selectedDays').includes(current.date()),
           isThisMonth: this.get('month') === current.month(),
           // tdoo is this day, is this week, etc.
           customClass: this.get('customClassFunction').call(this, current)
