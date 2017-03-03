@@ -12,6 +12,20 @@ const {
   on
 } = Ember;
 
+const Month = Ember.Object.extend({
+  month: null,
+  year: null,
+
+  /**
+   * Show last partial week
+   * If current month ends on a Tuesday, don't show this month on this calendar, but rather the next month
+   * This should be true for the last month
+   * @todo verify this works
+   * @type {Boolean}
+   */
+  showLastPartialWeek: false
+})
+
 export default Ember.Component.extend({
   layout,
   classNames: ['calendar-month-multi'],
@@ -19,6 +33,14 @@ export default Ember.Component.extend({
   // canonical
   startDate: null,
   endDate: null,
+
+  context: null,
+
+  /**
+   * Max months to show
+   * @type {Number}
+   */
+  maxMonthsToShow: 6,
 
   _onDidReceiveAttrs: on('didReceiveAttrs', function() {
     // validate starDate and endDate are valid moment objects
@@ -30,7 +52,7 @@ export default Ember.Component.extend({
     }
 
     // validate startDate is before endDate
-    if (this.get('endDate').diff(this.get('startDate')) < 0) {
+    if (this.get('endDate').isBefore(this.get('startDate'))) {
       throw new Error('Start date must be before end date', this.get('startDate'), this.get('endDate'));
     }
   }),
@@ -48,7 +70,7 @@ export default Ember.Component.extend({
    * Don't show duplicate end of last month/beginning of this month
    * If endDate - startDate = 2 months, still display 3 months (pad one on end)
    * If endDate - startDate > 6 mo, display "next" and "previous"
-   * @type {[type]}
+   * @type {array} array of months
    */
   displayMonths: computed('startDate', 'endDate', function() {
     var months = [];
@@ -56,10 +78,11 @@ export default Ember.Component.extend({
     var current = this.get('startDate');
 
     for (let i = 0; i < this.get('numberOfMonthsToDisplay'); i++) {
-        months.addObject(Ember.Object.create({
+        months.addObject(Month.create({
           // current.month() is 0-indexed, but calendar-month expects 1-indexed month
-          month: current.month() + 1,
-          year: current.year()
+          month: current.month(),
+          year: current.year(),
+          showLastPartialWeek: (i === this.get('numberOfMonthsToDisplay') - 1) || (current.endOf('month').weekday() < 3)
         }));
         current.add(1, 'month');
     }
@@ -69,9 +92,9 @@ export default Ember.Component.extend({
 
   /**
    * The number of months to display
-   * @type {number} 1, 3, or 6
+   * @type {number}
    */
-  numberOfMonthsToDisplay: computed('startDate', 'endDate', function() {
+  numberOfMonthsToDisplay: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
     var startDate = this.get('startDate');
     var endDate = this.get('endDate');
 
@@ -81,10 +104,10 @@ export default Ember.Component.extend({
 
     var monthsDiff = endDate.diff(startDate, 'months');
 
-    if (monthsDiff <=3 ) {
-      return 3;
+    if (monthsDiff > this.get('maxMonthsToShow')) {
+      return this.get('maxMonthsToShow');
     }
 
-    return 6;
+    return monthsDiff;
   })
 });

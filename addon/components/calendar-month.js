@@ -39,6 +39,9 @@ export default Ember.Component.extend({
   selectedDays: [],
   selectedClass: SELECTED_CLASS,
   notThisMonthClass: NOT_THIS_MONTH_CLASS,
+  context: null,
+
+  showLastPartialWeek: true,
 
   /**
    * @type {[type]}
@@ -84,6 +87,10 @@ export default Ember.Component.extend({
       first.add(1, 'week');
     }
 
+    if (this.get('showLastPartialWeek') === false) {
+      numWeeks--;
+    }
+
     return numWeeks;
   }),
 
@@ -100,6 +107,7 @@ export default Ember.Component.extend({
           date: current.date(),
           isSelected: this.get('selectedDays').includes(current.date()),
           isThisMonth: this.get('month') === current.month(),
+          // tdoo is this day, is this week, etc.
           customClass: this.get('customClassFunction').call(this, current)
         }));
         current = current.add(1, 'days');
