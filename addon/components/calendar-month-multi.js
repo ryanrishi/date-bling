@@ -74,7 +74,7 @@ export default Ember.Component.extend({
    */
   displayMonths: computed('startDate', 'endDate', 'numberOfMonthsToDisplay', function() {
     var months = [];
-    let current = this.get('startDate');
+    let current = moment(this.get('startDate'));
 
     for (let i = 0; i < this.get('numberOfMonthsToDisplay'); i++) {
         months.addObject(Month.create({
