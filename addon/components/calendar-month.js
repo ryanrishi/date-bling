@@ -121,7 +121,7 @@ export default Ember.Component.extend({
           // tdoo is this day, is this week, etc.
           customClass: this.get('customClassFunction').call(this, current)
         }));
-        current = current.add(1, 'days');
+        current.add(1, 'days');
       }
       weeks.push(days);
     }

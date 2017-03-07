@@ -83,7 +83,7 @@ export default Ember.Component.extend({
           year: current.year(),
           showLastPartialWeek: (i === this.get('numberOfMonthsToDisplay') - 1)
         }));
-        current = current.add(1, 'month');
+        current.add(1, 'month');
     }
 
     return months;
