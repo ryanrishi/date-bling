@@ -1,3 +1,6 @@
+@selected-color: hsl(80, 65%, 74%);
+@start-end-date-color: hsl(86, 99%, 34%);
+
 .calendar-month {
   thead {
     .month-name {
@@ -17,14 +20,15 @@
     padding: 5px;
     text-align: center;
     &.selected {
-      background: @jelli-green-light;
+      background-color: @selected-color;
     }
     &.not-this-month {
       color: gray;
     }
     &.start-date,
     &.end-date {
-      background-color: @jelli-green;
+      background-color: @start-end-date-color;
+      color: white;
     }
     &.start-date {
       border-top-left-radius: 5px;

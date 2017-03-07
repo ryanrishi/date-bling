@@ -103,7 +103,7 @@ export default Ember.Component.extend({
    */
   shouldShowNextButtom: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
     const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
-    return (monthsDiff > this.get('maxMonthsToShow'));
+    return (numberOfMonthsBetweenStartAndEndDate > this.get('maxMonthsToShow'));
   }),
 
   /**
@@ -114,7 +114,7 @@ export default Ember.Component.extend({
     const startDate = moment(this.get('startDate'));
     const endDate = moment(this.get('endDate'));
     return endDate.diff(startDate, 'months');
-  })
+  }),
 
   /**
    * The number of months to display

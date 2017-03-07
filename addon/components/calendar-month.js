@@ -11,7 +11,6 @@ const {
 } = Ember;
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const WEEKDAY_NAMES = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 const NOT_THIS_MONTH_CLASS = 'not-this-month';
 
 var DisplayDate = Ember.Object.extend({
@@ -41,9 +40,9 @@ export default Ember.Component.extend({
   month: new Date().getMonth(),
   monthNames: MONTH_NAMES,
   monthName: computed('month', function() {
-    return this.get('monthNames')[this.get('month')];
+    return moment.localeData().months()[this.get('month')];
   }),
-  weekdayNames: WEEKDAY_NAMES,
+  weekdayNames: moment.localeData().weekdaysMin(),
 
   showMonthName: true,
   showWeekdayNames: true,
