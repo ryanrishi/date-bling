@@ -53,7 +53,7 @@ export default Ember.Component.extend({
   context: null,
 
   showLastPartialWeek: true,
-  showWeekNumbers:true,
+  showWeekNumbers: false,
 
   numberOfColumns: computed('showWeekNumbers', function() {
     return this.get('showWeekNumbers') ? 8 : 7;
