@@ -119,7 +119,8 @@ export default Ember.Component.extend({
 
     for (let i = 0; i < this.get('numberOfWeeksInMonth'); i++) {
       let days = [];
-      const weekNumber = current.week();
+      // moment.week() is 0-indexed
+      const weekNumber = current.week() + 1;
       for (let i = 0; i < 7; i++) {
         days.push(DisplayDate.create({
           date: current.date(),
