@@ -1,9 +1,3 @@
-/**
- * @todo don't show last/first week twice across two consecutive months
- * @todo smart-zoom (1 mo, 3 mo, 6mo, > 6mo)
- * @todo if there are 4 months => display 6 months. figure out how to display those 2 extra months
- */
-
 import Ember from 'ember';
 import layout from '../templates/components/calendar-month-multi';
 
