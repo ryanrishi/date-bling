@@ -76,6 +76,12 @@ export default Ember.Component.extend({
     var months = [];
     let current = moment(this.get('startDate'));
 
+    // if I enter 7/31/2017 (a Monday, so start of week) as startDate, that will be rendered in August since 8/1 is _not_ start of week. I shouldn't show July
+    const firstWeekOfNextMonth = current.clone().add(1, 'month').startOf('month');
+    if (current.isSame(firstWeekOfNextMonth, 'week')) {
+      current.add(1, 'week');
+    }
+
     for (let i = 0; i < this.get('numberOfMonthsToDisplay'); i++) {
         months.addObject(Month.create({
           // current.month() is 0-indexed, but calendar-month expects 1-indexed month
