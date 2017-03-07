@@ -108,6 +108,6 @@ export default Ember.Component.extend({
       return maxMonthsToShow;
     }
 
-    return monthsDiff;
+    return monthsDiff + 1;
   })
 });
