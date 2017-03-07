@@ -90,24 +90,44 @@ export default Ember.Component.extend({
   }),
 
   /**
+  * @todo
+  * @type {boolean}
+  */
+  shouldShowPreviousButton: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
+    const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
+  }),
+
+  /**
+   * @todo
+   * @type {boolean}
+   */
+  shouldShowNextButtom: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
+    const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
+    return (monthsDiff > this.get('maxMonthsToShow'));
+  }),
+
+  /**
+   * The number of months between start and end date
+   * @type {number}
+   */
+  numberOfMonthsBetweenStartAndEndDate: computed('startDate', 'endDate', function() {
+    const startDate = moment(this.get('startDate'));
+    const endDate = moment(this.get('endDate'));
+    return endDate.diff(startDate, 'months');
+  })
+
+  /**
    * The number of months to display
    * @type {number}
    */
   numberOfMonthsToDisplay: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
-    var startDate = this.get('startDate');
-    var endDate = this.get('endDate');
+    const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
     const maxMonthsToShow = this.get('maxMonthsToShow');
 
-    if (startDate.month() === endDate.month()) {
-      return 1;
-    }
-
-    var monthsDiff = endDate.diff(startDate, 'months');
-
-    if (monthsDiff > maxMonthsToShow) {
+    if (numberOfMonthsBetweenStartAndEndDate > maxMonthsToShow) {
       return maxMonthsToShow;
     }
 
-    return monthsDiff + 1;
+    return numberOfMonthsBetweenStartAndEndDate + 1;
   })
 });
