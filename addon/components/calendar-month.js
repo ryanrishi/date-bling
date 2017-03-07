@@ -59,7 +59,7 @@ export default Ember.Component.extend({
   }),
 
   /**
-   * @type {[type]}
+   * @type {object} moment
    */
   canonicalFirstDayOfMonth: computed('month', 'year', function() {
     return moment().year(this.get('year')).month(this.get('month')).startOf('month');
@@ -78,7 +78,7 @@ export default Ember.Component.extend({
   /**
    * @todo use `moment.startOf('month').startOf('week')`
    * @todo rename this, since start of week might not be a Monday
-   * @type {[type]}
+   * @type {object} moment
    */
   firstMondayOfMonth: computed('canonicalFirstdayOfMonth', function() {
     var firstMondayOfMonth = moment(this.get('canonicalFirstDayOfMonth'));
@@ -89,10 +89,18 @@ export default Ember.Component.extend({
     return firstMondayOfMonth;
   }),
 
+  /**
+   * The number of days in this month
+   * @type {number}
+   */
   numberOfDaysInMonth: computed('canonicalFirstDayOfMonth', function() {
     return moment(this.get('canonicalFirstDayOfMonth')).daysInMonth();
   }),
 
+  /**
+   * The number of weeks in this month
+   * @type {number}
+   */
   numberOfWeeksInMonth: computed('canonicalFirstDayOfMonth', 'month', function() {
     var first = moment(this.get('canonicalFirstDayOfMonth'));
     var numWeeks = 0;

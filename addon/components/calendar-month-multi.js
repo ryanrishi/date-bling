@@ -18,7 +18,7 @@ const Month = Ember.Object.extend({
    * @type {Boolean}
    */
   showLastPartialWeek: false
-})
+});
 
 export default Ember.Component.extend({
   layout,
