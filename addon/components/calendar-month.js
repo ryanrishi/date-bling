@@ -53,6 +53,11 @@ export default Ember.Component.extend({
   context: null,
 
   showLastPartialWeek: true,
+  showWeekNumbers:true,
+
+  numberOfColumns: computed('showWeekNumbers', function() {
+    return this.get('showWeekNumbers') ? 8 : 7;
+  }),
 
   /**
    * @type {[type]}
@@ -114,6 +119,7 @@ export default Ember.Component.extend({
 
     for (let i = 0; i < this.get('numberOfWeeksInMonth'); i++) {
       let days = [];
+      const weekNumber = current.week();
       for (let i = 0; i < 7; i++) {
         days.push(DisplayDate.create({
           date: current.date(),
@@ -123,7 +129,11 @@ export default Ember.Component.extend({
         }));
         current.add(1, 'days');
       }
-      weeks.push(days);
+
+      weeks.push(Ember.Object.create({
+        days,
+        weekNumber
+      }));
     }
 
     return weeks;

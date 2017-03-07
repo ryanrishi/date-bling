@@ -2,12 +2,16 @@
   <thead>
     {{#if showMonthName}}
       <tr>
-        <th class="month-name" colspan="7"> {{monthName}} {{#if showYear}} {{year}} {{/if}} </th>
+        <th class="month-name" colspan="{{numberOfColumns}}"> {{monthName}} {{#if showYear}} {{year}} {{/if}} </th>
       </tr>
     {{/if}}
 
     {{#if showWeekdayNames}}
       <tr>
+        {{#if showWeekNumbers}}
+          {{! todo support a label here }}
+          <th></th>
+        {{/if}}
         {{#each weekdayNames as |name|}}
           <th class="weekday-name"> {{name}} </th>
         {{/each}}
@@ -18,7 +22,10 @@
   <tbody>
     {{#each displayWeeks as |week|}}
       <tr>
-        {{#each week as |day|}}
+        {{#if showWeekNumbers}}
+          <td class="week-number"> {{week.weekNumber}} </td>
+        {{/if}}
+        {{#each week.days as |day|}}
           <td class="day {{unless day.isThisMonth notThisMonthClass}} {{if day.customClass day.customClass}}"> {{day.date}} </td>
         {{/each}}
       </tr>
