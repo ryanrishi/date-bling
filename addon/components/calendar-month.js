@@ -95,7 +95,8 @@ export default Ember.Component.extend({
 
     while (first.month() === this.get('month')) {
       numWeeks++;
-      first.add(1, 'week');
+      // set to start of week after initial loop to catch partial weeks at end of month
+      first.add(1, 'week').startOf('week');
     }
 
     // console.debug('month', this.get('month'), 'isLastWeekPartialWeek', isPartialWeek(this.get('canonicalFirstDayOfMonth').endOf('month')));
