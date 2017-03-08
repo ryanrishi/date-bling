@@ -1,8 +1,3 @@
-/**
- * @todo optional week number at start of week
- * @todo get rid of label constants and use moment
- */
-
 import Ember from 'ember';
 import layout from '../templates/components/calendar-month';
 

@@ -14,7 +14,6 @@ const Month = Ember.Object.extend({
    * Show last partial week
    * If current month ends on a Tuesday, don't show this month on this calendar, but rather the next month
    * This should be true for the last month
-   * @todo verify this works
    * @type {Boolean}
    */
   showLastPartialWeek: false
