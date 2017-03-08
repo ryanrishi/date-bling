@@ -32,9 +32,11 @@ export default Ember.Component.extend({
 
   /**
    * Max months to show
-   * @type {Number}
+   * @type {number}
    */
   maxMonthsToShow: 6,
+
+  monthOffset: 0,
 
   _onDidReceiveAttrs: on('didReceiveAttrs', function() {
     // validate starDate and endDate are valid moment objects
@@ -51,6 +53,18 @@ export default Ember.Component.extend({
     }
   }),
 
+  actions: {
+    previous() {
+      const currentOffset = this.get('monthOffset');
+      this.set('monthOffset', currentOffset - this.get('maxMonthsToShow'));
+    },
+
+    next() {
+      const currentOffset = this.get('monthOffset');
+      this.set('monthOffset', currentOffset + this.get('maxMonthsToShow'));
+    }
+  },
+
   /**
    * Override this method in your controller
    * @param {object} date - moment date
@@ -66,9 +80,9 @@ export default Ember.Component.extend({
    * If endDate - startDate > 6 mo, display "next" and "previous"
    * @type {array} array of months
    */
-  displayMonths: computed('startDate', 'endDate', 'numberOfMonthsToDisplay', function() {
+  displayMonths: computed('startDate', 'endDate', 'numberOfMonthsToDisplay', 'monthOffset', function() {
     var months = [];
-    let current = moment(this.get('startDate'));
+    let current = moment(this.get('startDate')).add(this.get('monthOffset'), 'months');
 
     // if I enter 7/31/2017 (a Monday, so start of week) as startDate, that will be rendered in August since 8/1 is _not_ start of week. I shouldn't show July
     const firstWeekOfNextMonth = current.clone().add(1, 'month').startOf('month');
@@ -90,20 +104,27 @@ export default Ember.Component.extend({
   }),
 
   /**
-  * @todo
-  * @type {boolean}
-  */
-  shouldShowPreviousButton: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
-    const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
+   * T: first display month is after start date
+   * F: first display month is same/before start date
+   * @type {boolean}
+   */
+  shouldShowPreviousButton: computed('startDate', 'displayMonths.[]', function() {
+    const firstMonth = this.get('displayMonths.firstObject.month');
+    const firstMonthYear = this.get('displayMonths.firstObject.year');
+    const firstDayOfFirstMonth = moment().month(firstMonth).year(firstMonthYear).startOf('month');
+    return firstDayOfFirstMonth.isAfter(this.get('startDate'));
   }),
 
   /**
-   * @todo
+   * T: last display month is before end date
+   * F: last display month is same/after end date
    * @type {boolean}
    */
-  shouldShowNextButtom: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
-    const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
-    return (numberOfMonthsBetweenStartAndEndDate > this.get('maxMonthsToShow'));
+  shouldShowNextButton: computed('endDate', 'displayMonths.[]', function() {
+    const lastMonth = this.get('displayMonths.lastObject.month');
+    const lastMonthYear = this.get('displayMonths.lastObject.year');
+    const lastDayOfLastMonth = moment().month(lastMonth).year(lastMonthYear).endOf('month');
+    return lastDayOfLastMonth.isBefore(this.get('endDate'));
   }),
 
   /**

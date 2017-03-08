@@ -1,3 +1,7 @@
+{{#if shouldShowPreviousButton}}
+  <a {{action "previous"}}> Previous </a>
+{{/if}}
+
 {{#each displayMonths as |month|}}
   {{calendar-month
     year=month.year
@@ -6,3 +10,7 @@
     showLastPartialWeek=month.showLastPartialWeek
     context=context}}
 {{/each}}
+
+{{#if shouldShowNextButton}}
+  <a {{action "next"}}> Next </a>
+{{/if}}
