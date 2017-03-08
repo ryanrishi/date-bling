@@ -31,7 +31,7 @@ export default Ember.Component.extend({
   layout,
   classNames: ['calendar-month'],
 
-  month: new Date().getMonth(),
+  month: moment().month(),
   monthName: computed('month', function() {
     return moment.localeData().months()[this.get('month')];
   }),
@@ -40,7 +40,7 @@ export default Ember.Component.extend({
   showMonthName: true,
   showWeekdayNames: true,
   showYear: true,
-  year: new Date().getFullYear(),
+  year: moment().year(),
   notThisMonthClass: NOT_THIS_MONTH_CLASS,
   context: null,
 
