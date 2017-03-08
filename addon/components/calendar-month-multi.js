@@ -7,7 +7,16 @@ const {
 } = Ember;
 
 const Month = Ember.Object.extend({
+  /**
+   * 1-indexed month
+   * @type {number}
+   */
   month: null,
+
+  /**
+   * 1-indexed year
+   * @type {number}
+   */
   year: null,
 
   /**
@@ -23,10 +32,55 @@ export default Ember.Component.extend({
   layout,
   classNames: ['calendar-month-multi'],
 
-  // canonical
+  /**
+   * Start date
+   * @todo test different formats (canonical, moment, js date)
+   * @type {object|string}
+   */
   startDate: null,
+
+  /**
+   * End date
+   * @todo test different formats (canonical, moment, js date)
+   * @type {object|string}
+   */
   endDate: null,
 
+  /**
+   * Pass in anything that you will need in `customClassFunction`
+   * @example
+   * ```hbs
+   * {{calendar-month-multi
+   *    startDate=today
+   *    endDate=threeMonthsFromNow
+   *    context=(hash
+   *      startDate=today
+   *      endDate=threeMonthsFromNow
+   *      daysIWantToExclude=daysIWantToExclude)
+   *    customClassFunction=customClassFunction}}
+   * ```
+   *
+   * ```js
+   * customClassFunction(date) {
+   *   const { startDate, endDate, daysIWantToExclude } = this.get('context');
+   *   if (date.isSame(startDate, 'day')) {
+   *     return 'start-date';
+   *   }
+   *
+   *   if (date.isSame(endDate, 'day')) {
+   *     return 'end-date';
+   *   }
+   *
+   *   if (daysIWantToExclude.includes(date.day())) {
+   *     // don't add a class to these days
+   *     return;
+   *   }
+   *
+   *   return 'selected';
+   * }
+   * ```
+   * @type {object}
+   */
   context: null,
 
   /**
@@ -35,6 +89,11 @@ export default Ember.Component.extend({
    */
   maxMonthsToShow: 6,
 
+  /**
+   * Offset for displayMonths
+   * @private
+   * @type {number}
+   */
   monthOffset: 0,
 
   _onDidReceiveAttrs: on('didReceiveAttrs', function() {
@@ -44,6 +103,15 @@ export default Ember.Component.extend({
         startDate: moment(this.get('startDate')),
         endDate: moment(this.get('endDate'))
       });
+    }
+
+    // validate validity of moments
+    if (!this.get('startDate').isValid()) {
+      throw new Error('Start date is invalid', this.get('startDate'));
+    }
+
+    if (!this.get('endDate').isValid()) {
+      throw new Error('End date is invalid', this.get('endDate'));
     }
 
     // validate startDate is before endDate

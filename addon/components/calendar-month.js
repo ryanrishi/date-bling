@@ -5,7 +5,6 @@ const {
   computed
 } = Ember;
 
-const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const NOT_THIS_MONTH_CLASS = 'not-this-month';
 
 var DisplayDate = Ember.Object.extend({
@@ -33,7 +32,6 @@ export default Ember.Component.extend({
   classNames: ['calendar-month'],
 
   month: new Date().getMonth(),
-  monthNames: MONTH_NAMES,
   monthName: computed('month', function() {
     return moment.localeData().months()[this.get('month')];
   }),
@@ -69,20 +67,6 @@ export default Ember.Component.extend({
   customClassFunction(date) {
     return false;
   },
-
-  /**
-   * @todo use `moment.startOf('month').startOf('week')`
-   * @todo rename this, since start of week might not be a Monday
-   * @type {object} moment
-   */
-  firstMondayOfMonth: computed('canonicalFirstdayOfMonth', function() {
-    var firstMondayOfMonth = moment(this.get('canonicalFirstDayOfMonth'));
-    while (firstMondayOfMonth.weekday() !== 0) {
-      firstMondayOfMonth.add(1, 'day');
-    }
-
-    return firstMondayOfMonth;
-  }),
 
   /**
    * The number of days in this month
