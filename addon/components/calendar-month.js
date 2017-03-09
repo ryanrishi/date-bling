@@ -60,12 +60,12 @@ export default Ember.Component.extend({
   }),
 
   /**
-   * Override this method in your controller
+   * Override this method in your code
    * @example start date and end date over multiple months - this component doesn't know anything about start/end dates (and shouldn't)
    * @param {object} date - moment date
    * @return {string} class name to be applied to this date
    */
-  customClassFunction(date) {
+  customClassFunction(/*date*/) {
     return false;
   },
 

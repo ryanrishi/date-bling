@@ -150,11 +150,11 @@ export default Ember.Component.extend({
   },
 
   /**
-   * Override this method in your controller
+   * Override this method in your code
    * @param {object} date - moment date
    * @return {string} class name to be applied to this date
    */
-  customClassFunction(date) {
+  customClassFunction(/*date*/) {
     return false;
   },
 
