@@ -1,1 +1,1 @@
-export { default } from 'date-bling/components/calendar-month';
+export { default } from 'datetime-bling/components/calendar-month';
