@@ -2,7 +2,7 @@
   <thead>
     {{#if showMonthName}}
       <tr>
-        <th class="month-name" colspan="{{numberOfColumns}}"> {{monthName}} {{#if showYear}} {{year}} {{/if}} </th>
+        <th colspan="{{numberOfColumns}}"> <span class="month-name"> {{monthName}} </span> {{#if showYear}} <span class="year-name"> {{year}} </span> {{/if}} </th>
       </tr>
     {{/if}}
 

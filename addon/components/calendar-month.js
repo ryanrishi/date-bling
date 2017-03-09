@@ -45,6 +45,7 @@ export default Ember.Component.extend({
   context: null,
 
   showLastPartialWeek: true,
+  showFirstPartialWeek: true,
   showWeekNumbers: false,
 
   numberOfColumns: computed('showWeekNumbers', function() {
@@ -104,6 +105,11 @@ export default Ember.Component.extend({
     var current = first.startOf('week');
 
     for (let i = 0; i < this.get('numberOfWeeksInMonth'); i++) {
+      if (i === 0 && this.get('showFirstPartialWeek') === false) {
+        current.add(1, 'week');
+        continue;
+      }
+
       let days = [];
       // moment.week() is 0-indexed
       const weekNumber = current.week() + 1;

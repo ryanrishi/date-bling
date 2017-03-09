@@ -22,10 +22,18 @@ const Month = Ember.Object.extend({
   /**
    * Show last partial week
    * If current month ends on a Tuesday, don't show this month on this calendar, but rather the next month
-   * This should be true for the last month
-   * @type {Boolean}
+   * This should always be true for the last month
+   * @type {boolean}
    */
-  showLastPartialWeek: false
+  showLastPartialWeek: true,
+
+  /**
+   * Show first partial week
+   * If current month starts on a Thursday, don't show this month on this calendar, but rather on previous month's calendar
+   * This should always be true for the first month
+   * @type {boolean}
+   */
+  showFirstPartialWeek: true
 });
 
 export default Ember.Component.extend({
@@ -37,14 +45,14 @@ export default Ember.Component.extend({
    * @todo test different formats (canonical, moment, js date)
    * @type {object|string}
    */
-  startDate: null,
+  startDate: moment(),
 
   /**
    * End date
    * @todo test different formats (canonical, moment, js date)
    * @type {object|string}
    */
-  endDate: null,
+  endDate: moment(),
 
   /**
    * Pass in anything that you will need in `customClassFunction`
@@ -95,6 +103,15 @@ export default Ember.Component.extend({
    * @type {number}
    */
   monthOffset: 0,
+
+  /**
+   * Show the first of the month on that month
+   * @example October 2017 - 1st is on Saturday. If this is true, October would include Sept 25 (if moment start of week locale is Monday)
+   *          If false, this would show October 1st in the month of October since the majority of that week is in September
+   * @todo this is commented out for now - this needs to be clearer how the user could pass this in
+   * @type {boolean}
+   */
+  // showFirstDayOfMonth: false,
 
   _onDidReceiveAttrs: on('didReceiveAttrs', function() {
     // validate starDate and endDate are valid moment objects
@@ -158,11 +175,45 @@ export default Ember.Component.extend({
     }
 
     for (let i = 0; i < this.get('numberOfMonthsToDisplay'); i++) {
+        let showLastPartialWeek = false;
+        let showFirstPartialWeek = false;
+
+        // check if majority of first week is in this month or not
+        const startOfThisMonth = moment(current).startOf('month');
+        const startOfFirstWeek = moment(startOfThisMonth).startOf('week');
+        if (startOfThisMonth.diff(startOfFirstWeek, 'days') > 3) {
+          showFirstPartialWeek = false;
+        }
+        else {
+          showFirstPartialWeek = true;
+        }
+
+        // check if majority of last week is in this month or not
+        const endOfThisMonth = moment(current).endOf('month');
+        const endOfLastWeek = moment(endOfThisMonth).endOf('week');
+        if (endOfLastWeek.diff(endOfThisMonth, 'days') > 3) {
+          showLastPartialWeek = false;
+        }
+        else {
+          showLastPartialWeek = true;
+        }
+
+        if (i === 0) {
+          // always show first week of first month
+          showFirstPartialWeek = true;
+        }
+
+        if (i === this.get('numberOfMonthsToDisplay') - 1) {
+          // always show last week of last month
+          showLastPartialWeek = true;
+        }
+
         months.addObject(Month.create({
           // current.month() is 0-indexed, but calendar-month expects 1-indexed month
           month: current.month(),
           year: current.year(),
-          showLastPartialWeek: (i === this.get('numberOfMonthsToDisplay') - 1)
+          showLastPartialWeek,
+          showFirstPartialWeek
         }));
         current.add(1, 'month');
     }
