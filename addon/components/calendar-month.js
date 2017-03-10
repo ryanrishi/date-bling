@@ -33,9 +33,9 @@ export default Ember.Component.extend({
 
   month: moment().month(),
   monthName: computed('month', function() {
-    return moment.localeData().months()[this.get('month')];
+    return moment.months(/* respect locale*/true)[this.get('month')];
   }),
-  weekdayNames: moment.localeData().weekdaysMin(),
+  weekdayNames: moment.weekdaysMin(/* respect locale */true),
 
   showMonthName: true,
   showWeekdayNames: true,
