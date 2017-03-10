@@ -1,4 +1,13 @@
-// check out `calendar-month.less`
-// .calendar-month-multi {
-//   display: inline-flex;
-// }
+.calendar-month-multi {
+  display: inline-flex;
+  .calendar-month {
+      &:not(:last-child) {
+      margin-right: 15px;
+    }
+  }
+
+  .previous,
+  .next {
+    cursor: pointer;
+  }
+}

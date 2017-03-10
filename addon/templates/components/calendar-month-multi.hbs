@@ -1,6 +1,4 @@
-{{#if shouldShowPreviousButton}}
-  <a {{action "previous"}}> Previous </a>
-{{/if}}
+<a class="previous {{unless shouldShowPreviousButton 'hidden'}}" {{action "previous"}}> Previous </a>
 
 {{#each displayMonths as |month|}}
   {{calendar-month
@@ -12,6 +10,4 @@
     context=context}}
 {{/each}}
 
-{{#if shouldShowNextButton}}
-  <a {{action "next"}}> Next </a>
-{{/if}}
+<a class="next {{unless shouldShowNextButton 'hidden'}}" {{action "next"}}> Next </a>
