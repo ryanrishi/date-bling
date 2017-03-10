@@ -205,6 +205,7 @@ export default Ember.Component.extend({
 
         if (i === this.get('numberOfMonthsToDisplay') - 1) {
           // always show last week of last month
+          // I may want to change this to see if it's the month of endDate - this is showing up 2x in last month of pagination even if there are more months
           showLastPartialWeek = true;
         }
 
@@ -247,12 +248,20 @@ export default Ember.Component.extend({
 
   /**
    * The number of months between start and end date
+   * @todo see if I can use something like `Math.ceil(endDate.diff(startDate, 'months', true))`
    * @type {number}
    */
   numberOfMonthsBetweenStartAndEndDate: computed('startDate', 'endDate', function() {
     const startDate = moment(this.get('startDate'));
     const endDate = moment(this.get('endDate'));
-    return endDate.diff(startDate, 'months');
+    let numMonths = 0;
+
+    while (endDate.month() !== startDate.month() || endDate.year() !== startDate.year()) {
+      numMonths++;
+      startDate.add(1, 'month');
+    }
+
+    return numMonths;
   }),
 
   /**
