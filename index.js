@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = {
-  name: 'date-bling',
+  name: 'datetime-bling',
 
   isDevelopingAddon() {
     return true;
