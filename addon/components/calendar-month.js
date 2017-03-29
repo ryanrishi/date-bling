@@ -10,6 +10,7 @@ const NOT_THIS_MONTH_CLASS = 'not-this-month';
 var DisplayDate = Ember.Object.extend({
   date: -1,
   isThisMonth: false,
+  customClass: null
 });
 
 function isPartialWeek(date) {
