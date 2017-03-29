@@ -162,6 +162,7 @@ export default Ember.Component.extend({
    * Don't show duplicate end of last month/beginning of this month
    * If endDate - startDate = 2 months, still display 3 months (pad one on end)
    * If endDate - startDate > 6 mo, display "next" and "previous"
+   * @todo this doesn't work with 3/29/2017 and 4/16/2017
    * @type {array} array of months
    */
   displayMonths: computed('startDate', 'endDate', 'numberOfMonthsToDisplay', 'monthOffset', function() {
@@ -175,48 +176,48 @@ export default Ember.Component.extend({
     }
 
     for (let i = 0; i < this.get('numberOfMonthsToDisplay'); i++) {
-        let showLastPartialWeek = false;
-        let showFirstPartialWeek = false;
+      let showLastPartialWeek = false;
+      let showFirstPartialWeek = false;
 
-        // check if majority of first week is in this month or not
-        const startOfThisMonth = moment(current).startOf('month');
-        const startOfFirstWeek = moment(startOfThisMonth).startOf('week');
-        if (startOfThisMonth.diff(startOfFirstWeek, 'days') > 3) {
-          showFirstPartialWeek = false;
-        }
-        else {
-          showFirstPartialWeek = true;
-        }
+      // check if majority of first week is in this month or not
+      const startOfThisMonth = moment(current).startOf('month');
+      const startOfFirstWeek = moment(startOfThisMonth).startOf('week');
+      if (startOfThisMonth.diff(startOfFirstWeek, 'days') > 3) {
+        showFirstPartialWeek = false;
+      }
+      else {
+        showFirstPartialWeek = true;
+      }
 
-        // check if majority of last week is in this month or not
-        const endOfThisMonth = moment(current).endOf('month');
-        const endOfLastWeek = moment(endOfThisMonth).endOf('week');
-        if (endOfLastWeek.diff(endOfThisMonth, 'days') > 3) {
-          showLastPartialWeek = false;
-        }
-        else {
-          showLastPartialWeek = true;
-        }
+      // check if majority of last week is in this month or not
+      const endOfThisMonth = moment(current).endOf('month');
+      const endOfLastWeek = moment(endOfThisMonth).endOf('week');
+      if (endOfLastWeek.diff(endOfThisMonth, 'days') > 3) {
+        showLastPartialWeek = false;
+      }
+      else {
+        showLastPartialWeek = true;
+      }
 
-        if (i === 0) {
-          // always show first week of first month
-          showFirstPartialWeek = true;
-        }
+      if (i === 0) {
+        // always show first week of first month
+        showFirstPartialWeek = true;
+      }
 
-        if (i === this.get('numberOfMonthsToDisplay') - 1) {
-          // always show last week of last month
-          // I may want to change this to see if it's the month of endDate - this is showing up 2x in last month of pagination even if there are more months
-          showLastPartialWeek = true;
-        }
+      if (i === this.get('numberOfMonthsToDisplay') - 1) {
+        // always show last week of last month
+        // I may want to change this to see if it's the month of endDate - this is showing up 2x in last month of pagination even if there are more months
+        showLastPartialWeek = true;
+      }
 
-        months.addObject(Month.create({
-          // current.month() is 0-indexed, but calendar-month expects 1-indexed month
-          month: current.month(),
-          year: current.year(),
-          showLastPartialWeek,
-          showFirstPartialWeek
-        }));
-        current.add(1, 'month');
+      months.addObject(Month.create({
+        // current.month() is 0-indexed, but calendar-month expects 1-indexed month
+        month: current.month(),
+        year: current.year(),
+        showLastPartialWeek,
+        showFirstPartialWeek
+      }));
+      current.add(1, 'month');
     }
 
     return months;
