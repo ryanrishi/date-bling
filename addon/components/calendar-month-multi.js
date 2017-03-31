@@ -140,12 +140,12 @@ export default Ember.Component.extend({
   actions: {
     previous() {
       const currentOffset = this.get('monthOffset');
-      this.set('monthOffset', currentOffset - this.get('maxMonthsToShow'));
+      this.set('monthOffset', currentOffset - this.get('numberOfMonthsToDisplay'));
     },
 
     next() {
       const currentOffset = this.get('monthOffset');
-      this.set('monthOffset', currentOffset + this.get('maxMonthsToShow'));
+      this.set('monthOffset', currentOffset + this.get('numberOfMonthsToDisplay'));
     }
   },
 
