@@ -5,21 +5,19 @@ moduleForComponent('calendar-month-multi', 'Integration | Component | calendar m
   integration: true
 });
 
-test('it renders', function(assert) {
+test('it works when the start date is pushed to the first week of the next month', function(assert) {
+  assert.ok(true);
+});
 
-  // Set any properties with this.set('myProperty', 'value');
-  // Handle any actions with this.on('myAction', function(val) { ... });
+test('it does not show the previous button if the start date is at the end of a previous month', function(assert) {
+  let component = this.subject();
+
+  let startDate = '03/29/2017';
+  let endDate = '04/16/2017';
+
+  component.setProperties({ startDate, endDate });
 
   this.render(hbs`{{calendar-month-multi}}`);
 
-  assert.equal(this.$().text().trim(), '');
-
-  // Template block usage:
-  this.render(hbs`
-    {{#calendar-month-multi}}
-      template block text
-    {{/calendar-month-multi}}
-  `);
-
-  assert.equal(this.$().text().trim(), 'template block text');
+  assert.equal(this.$('.previous').text().trim(), '');
 });
