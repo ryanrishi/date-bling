@@ -231,8 +231,8 @@ export default Ember.Component.extend({
   shouldShowPreviousButton: computed('startDate', 'displayMonths.[]', function() {
     const firstMonth = this.get('displayMonths.firstObject.month');
     const firstMonthYear = this.get('displayMonths.firstObject.year');
-    const firstDayOfFirstMonth = moment().month(firstMonth).year(firstMonthYear).startOf('month');
-    return firstDayOfFirstMonth.isAfter(this.get('startDate'));
+    const startOfWeekOfFirstMonth = moment().month(firstMonth).year(firstMonthYear).startOf('month').startOf('week');
+    return startOfWeekOfFirstMonth.isAfter(this.get('startDate'));
   }),
 
   /**
@@ -243,8 +243,8 @@ export default Ember.Component.extend({
   shouldShowNextButton: computed('endDate', 'displayMonths.[]', function() {
     const lastMonth = this.get('displayMonths.lastObject.month');
     const lastMonthYear = this.get('displayMonths.lastObject.year');
-    const lastDayOfLastMonth = moment().month(lastMonth).year(lastMonthYear).endOf('month');
-    return lastDayOfLastMonth.isBefore(this.get('endDate'));
+    const endOfWeekOfLastMonth = moment().month(lastMonth).year(lastMonthYear).endOf('month').endOf('week');
+    return endOfWeekOfLastMonth.isBefore(this.get('endDate'));
   }),
 
   /**
