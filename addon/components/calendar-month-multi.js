@@ -162,11 +162,11 @@ export default Ember.Component.extend({
    * Don't show duplicate end of last month/beginning of this month
    * If endDate - startDate = 2 months, still display 3 months (pad one on end)
    * If endDate - startDate > 6 mo, display "next" and "previous"
-   * @todo this doesn't work with 3/29/2017 and 4/16/2017
+   * @todo don't use Ember.A - I think there's an 'enablePrototypeExtension' flag which I can enable for test environments
    * @type {array} array of months
    */
   displayMonths: computed('startDate', 'endDate', 'numberOfMonthsToDisplay', 'monthOffset', function() {
-    var months = [];
+    var months = Ember.A([]);
     let current = moment(this.get('startDate')).add(this.get('monthOffset'), 'months');
 
     // if I enter 7/31/2017 (a Monday, so start of week) as startDate, that will be rendered in August since 8/1 is _not_ start of week. I shouldn't show July
@@ -217,6 +217,7 @@ export default Ember.Component.extend({
         showLastPartialWeek,
         showFirstPartialWeek
       }));
+
       current.add(1, 'month');
     }
 
@@ -270,13 +271,25 @@ export default Ember.Component.extend({
    * @type {number}
    */
   numberOfMonthsToDisplay: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
-    const numberOfMonthsBetweenStartAndEndDate = this.get('numberOfMonthsBetweenStartAndEndDate');
-    const maxMonthsToShow = this.get('maxMonthsToShow');
+    const startDate = moment(this.get('startDate'));
+    const endDate = moment(this.get('endDate'));
+    const startOfNextMonth = startDate.clone().add(1, 'month').startOf('month');
+    if (startDate.isSame(startOfNextMonth, 'week')) {
+      startDate.add(1, 'week');
+    }
 
-    if (numberOfMonthsBetweenStartAndEndDate > maxMonthsToShow) {
+    let numMonths = 1;
+
+    while (startDate.month() !== endDate.month() || startDate.year() !== endDate.year()) {
+      numMonths++;
+      startDate.add(1, 'month');
+    }
+
+    const maxMonthsToShow = this.get('maxMonthsToShow');
+    if (numMonths > maxMonthsToShow) {
       return maxMonthsToShow;
     }
 
-    return numberOfMonthsBetweenStartAndEndDate + 1;
+    return numMonths;
   })
 });
