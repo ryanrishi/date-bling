@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/ryanrishi/date-bling.svg?branch=master)](https://travis-ci.org/ryanrishi/date-bling)
+
 # Date-bling
 
 This README outlines the details of collaborating on this Ember addon.
