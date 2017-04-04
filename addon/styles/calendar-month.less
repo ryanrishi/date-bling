@@ -1,15 +1,8 @@
-@selected-color: hsl(80, 65%, 74%);
-@start-end-date-color: hsl(86, 99%, 34%);
-
 .calendar-month {
   thead {
     th {
       text-align: center;
-      &.month-name {
-        // text-align: center;
-      }
       &.weekday-name {
-        // text-align: center;
         color: gray;
       }
     }
@@ -22,24 +15,8 @@
   .day {
     padding: 5px;
     text-align: center;
-    &.selected {
-      background-color: @selected-color;
-    }
     &.not-this-month {
       color: gray;
-    }
-    &.start-date,
-    &.end-date {
-      background-color: @start-end-date-color;
-      color: white;
-    }
-    &.start-date {
-      border-top-left-radius: 5px;
-      // border-bottom-left-radius: 5px;
-    }
-    &.end-date {
-      // border-top-right-radius: 5px;
-      border-bottom-right-radius: 5px;
     }
   }
 }
