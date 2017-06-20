@@ -2,8 +2,7 @@ import Ember from 'ember';
 import layout from '../templates/components/calendar-month-multi';
 
 const {
-  computed,
-  on
+  computed
 } = Ember;
 
 const Month = Ember.Object.extend({
@@ -113,7 +112,8 @@ export default Ember.Component.extend({
    */
   // showFirstDayOfMonth: false,
 
-  _onDidReceiveAttrs: on('didReceiveAttrs', function() {
+  didReceiveAttrs() {
+    this._super(...arguments);
     // validate starDate and endDate are valid moment objects
     if (!moment.isMoment(this.get('startDate')) || !moment.isMoment(this.get('endDate'))) {
       this.setProperties({
@@ -135,7 +135,7 @@ export default Ember.Component.extend({
     if (this.get('endDate').isBefore(this.get('startDate'))) {
       throw new Error('Start date must be before end date', this.get('startDate'), this.get('endDate'));
     }
-  }),
+  },
 
   actions: {
     previous() {
@@ -168,12 +168,6 @@ export default Ember.Component.extend({
   displayMonths: computed('startDate', 'endDate', 'numberOfMonthsToDisplay', 'monthOffset', function() {
     var months = Ember.A([]);
     let current = moment(this.get('startDate')).add(this.get('monthOffset'), 'months');
-
-    // if I enter 7/31/2017 (a Monday, so start of week) as startDate, that will be rendered in August since 8/1 is _not_ start of week. I shouldn't show July
-    const firstWeekOfNextMonth = current.clone().add(1, 'month').startOf('month');
-    if (current.isSame(firstWeekOfNextMonth, 'week')) {
-      current.add(1, 'week');
-    }
 
     for (let i = 0; i < this.get('numberOfMonthsToDisplay'); i++) {
       let showLastPartialWeek = false;
@@ -273,6 +267,11 @@ export default Ember.Component.extend({
   numberOfMonthsToDisplay: computed('startDate', 'endDate', 'maxMonthsToShow', function() {
     const startDate = moment(this.get('startDate'));
     const endDate = moment(this.get('endDate'));
+
+    if (startDate.isSame(endDate, 'month') && startDate.isSame(endDate, 'year')) {
+      return 1;
+    }
+
     const startOfNextMonth = startDate.clone().add(1, 'month').startOf('month');
     if (startDate.isSame(startOfNextMonth, 'week')) {
       startDate.add(1, 'week');

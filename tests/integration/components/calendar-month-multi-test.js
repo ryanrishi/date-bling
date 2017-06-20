@@ -46,3 +46,17 @@ test('it shows two months', function(assert) {
 
   assert.equal(this.$('.calendar-month').length, 2, 'it renders two months');
 });
+
+test('it works when the days are in the last week of the month and consecutive days', function(assert) {
+  // this fixes a memory leak in v0.0.9
+  let startDate = '06/26/2017';
+  let endDate = '06/27/2017';
+
+  this.setProperties({ startDate, endDate });
+
+  this.render(hbs`{{calendar-month-multi
+                    startDate=startDate
+                    endDate=endDate}}`);
+
+  assert.equal(this.$('.calendar-month').length, 1, 'it renders one month');
+});
