@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/calendar-month';
+import moment from 'moment';
 
 const {
   computed
@@ -14,7 +15,7 @@ var DisplayDate = Ember.Object.extend({
 });
 
 function isPartialWeek(date) {
-  console.debug('date', date, 'startOfweek', date.startOf('week'));
+  Ember.debug('date', date, 'startOfweek', date.startOf('week'));
   let startOfWeek = date.startOf('week');
   const month = date.month();
 
