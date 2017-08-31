@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import layout from '../templates/components/calendar-month-multi';
+import moment from 'moment';
 
 const {
   computed

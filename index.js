@@ -1,10 +1,6 @@
-/* jshint node: true */
+/* eslint-env node */
 'use strict';
 
 module.exports = {
-  name: 'datetime-bling',
-
-  isDevelopingAddon() {
-    return true;
-  }
+  name: 'datetime-bling'
 };
