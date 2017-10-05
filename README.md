@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/ryanrishi/date-bling.svg?branch=master)](https://travis-ci.org/ryanrishi/date-bling)
+[![npm version](https://badge.fury.io/js/datetime-bling.svg)](https://badge.fury.io/js/datetime-bling)
 
 # Date-bling
 
