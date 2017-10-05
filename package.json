@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "description": "A simple yet configurable calendar for Ember applications.",
   "keywords": [
-    "ember-addon"
+    "ember-addon",
+    "moment"
   ],
   "license": "MIT",
   "author": "Ryan Rishi <ryan@ryanrishi.com>",

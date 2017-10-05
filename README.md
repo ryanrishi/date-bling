@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/ryanrishi/date-bling.svg?branch=master)](https://travis-ci.org/ryanrishi/date-bling)
 [![npm version](https://badge.fury.io/js/datetime-bling.svg)](https://badge.fury.io/js/datetime-bling)
 
-An [ember-cli](https://ember-cli.com/) addon to display calendar month(s).
+An [ember-cli](https://ember-cli.com/) addon to display calendar month(s) using [moment.js](https://momentjs.com/).
 
 ## Usage
 ### Single month
